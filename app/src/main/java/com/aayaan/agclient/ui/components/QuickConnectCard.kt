@@ -367,7 +367,7 @@ fun QuickConnectCard(
                     )
                     Text(
                         text = "1. Set your target destination server in the config card below.\n" +
-                                "2. Start ${if (isSandboxRunning) "Virtual Sandbox" else "Proxy"} above.\n" +
+                                "2. Tap 'START PROXY' above.\n" +
                                 "3. Tap 'Copy $currentIp' and 'Launch Minecraft'.\n" +
                                 "4. In Minecraft: Tap Play.\n" +
                                 "5. Tap the 'Servers' tab (or Servers icon 🖥️) ➡️ Scroll down to Additional Servers & tap 'Add Server'.\n" +

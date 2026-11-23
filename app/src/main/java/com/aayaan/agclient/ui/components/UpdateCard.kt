@@ -22,7 +22,7 @@ import java.io.File
 @Composable
 fun UpdateCard(
     updateState: UpdateState,
-    currentVersion: String = "2.9.9",
+    currentVersion: String = "3.0.0",
     onDownloadUpdate: (String) -> Unit,
     onInstallApk: (File) -> Unit,
     onOpenSettings: () -> Unit = {},

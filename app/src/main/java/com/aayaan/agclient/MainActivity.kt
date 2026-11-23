@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                     Badge(containerColor = ElectricPurple) {
                                         Text(
-                                            text = "v2.9.9",
+                                            text = "v3.0.0",
                                             style = MaterialTheme.typography.labelSmall,
                                             color = TextPrimary
                                         )
@@ -174,6 +174,9 @@ class MainActivity : ComponentActivity() {
                 action = BedrockProxyService.ACTION_STOP
             }
             startService(intent)
+            if (AGVirtualSandboxService.isSandboxRunning.value) {
+                stopVirtualSandbox()
+            }
         } catch (t: Throwable) {
             Logger.e("MainActivity", "Failed to stop proxy service", t)
         }

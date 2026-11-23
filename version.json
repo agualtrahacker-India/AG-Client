@@ -1,6 +1,6 @@
 {
-  "version": "2.9.9",
-  "versionCode": 19,
-  "downloadUrl": "https://github.com/agualtrahacker-India/AG-Client/releases/download/v2.9.9/app-release.apk",
-  "releaseNotes": "v2.9.9: Hardened Xbox Live & Mojang authentication pipeline (pre-fetched Mojang chain, 96-byte JOSE ES384 handshake signature fix, multi-layer client EC key extraction), Auto-Updater download & Android 8-16 unknown app install permission support, and Console Updater Diagnostic probe."
+  "version": "3.0.0",
+  "versionCode": 20,
+  "downloadUrl": "https://github.com/agualtrahacker-India/AG-Client/releases/download/v3.0.0/app-release.apk",
+  "releaseNotes": "v3.0.0: Major Milestone Release — Complete Bedrock MITM Authentication Architecture, 90-Day Xbox Account Tracking, JOSE ES384 Handshake Cryptography, Dual Auto-Updater Engine with Android 8-16 Unknown App Source Grants, and Live Console Diagnostics."
 }

@@ -1,7 +1,7 @@
-# 🛡️ AG Client (v2.9.9) - Standalone Minecraft Bedrock Proxy for Android
+# 🛡️ AG Client (v3.0.0) - Standalone Minecraft Bedrock Proxy for Android
 
 [![Android CI & Release](https://github.com/agualtrahacker-India/AG-CLient/actions/workflows/android-build.yml/badge.svg)](https://github.com/agualtrahacker-India/AG-CLient/actions)
-![Version](https://img.shields.io/badge/Release-v2.9.0--beta.1-blueviolet)
+![Version](https://img.shields.io/badge/Release-v3.0.0-blueviolet)
 ![Branch](https://img.shields.io/badge/Branch-connection--test-orange)
 ![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B%20(API%2026%2B)-brightgreen)
 ![Target SDK](https://img.shields.io/badge/Target%20SDK-Android%2014%20(API%2034)-blue)
@@ -15,42 +15,49 @@
 
 ---
 
-## ✨ What's New in v2.9.9 (Auth Pipeline Hardening, Auto-Updater Fix & Handshake Verification)
+## ✨ What's New in v3.0.0 (Major Milestone Release)
 
-* 🔬 **Dedicated `connection-test` Branch & Beta 1 Diagnostics Build**: Isolated test environment to definitively determine whether network connection issues are within client code or Android runtime/environment.
-* 🛰️ **RakNet Packet Inspector & Live Hex Telemetry**: Real-time packet parsing (`0x05`, `0x06`, `0x07`, `0x08`, `0x09`, `0x10`, `0x13`, `0x19`, `0x1c`) for every UDP datagram passing between Minecraft, tun0, and the proxy relay.
-* 🧪 **Integrated In-App Connectivity Test Suite**: "Run Network Diagnostic" probe directly in the Console testing port 19133 responsiveness, DNS latency, and upstream UDP ping reachability.
-* 📋 **Interactive Feedback & Comprehensive Diagnostic Bundle**: Record user response ("Working", "Stuck: External Server", "Stuck: Multiplayer", "Timed Out") and copy a complete diagnostic bundle for instant investigation.
-* ⚡ **Unlimited Rate-Limit Free Auto-Updater**: Uses GitHub Web Redirects and Fastly CDN `version.json` caching so anyone can check for updates an unlimited number of times without hitting GitHub API 403 limits.
-* 🧵 **Non-blocking Upstream Coroutine Dispatcher**: Upstream DNS resolution and connection initialization execute off Netty's NIO worker thread to eliminate thread stalling.
+* 🎯 **Single Unified "START PROXY" Action Button**: Completely eliminated the confusing dual-button layout in the UI. There is now strictly **one prominent Start button** (`START PROXY` / `STOP PROXY`). The Virtual Sandbox Router is now an intuitive Material 3 toggle switch.
+* 🔐 **Bedrock MITM Cryptography Architecture**:
+  * **JOSE ES384 Signature Fix:** Handshake JWT signatures converted from ASN.1 DER to standard 96-byte JOSE (`R || S`) format required by vanilla Minecraft Bedrock, ensuring encryption verification never drops.
+  * **Mojang Chain Pre-Fetch Guard:** Pre-fetches the official Mojang chain on proxy boot and blocks outbound `LoginPacket` transmission for up to 4 seconds until the chain is ready, eliminating race-condition disconnections on The Hive.
+  * **Multi-Layer Key Extraction:** Multi-reflection inspection over CloudburstMC packet representations (supporting `AsciiString`, `ByteBuf`, `List<String>`, and JSON chains) prioritizing the player's identity public key over the CA Root key.
+* 🛡️ **90-Day Xbox Account Tracking & Silent Token Refresh**: Hardware-backed persistent EC keypair (`deviceKeyPair`) with silent token refresh every 12 hours so sessions remain active without repeated logins.
+* 🧪 **Live In-App Diagnostics (Console Tab)**:
+  * **Run Auth Diagnostic:** One-tap live probe validating Microsoft refresh tokens, Xbox XSTS tokens, device keypair, and live endpoint handshake with Mojang.
+  * **Run Updater Diagnostic:** Verifies storage write permissions, download directories, and Android package installer configuration.
+  * **Run Network Diagnostic:** Tests local bind responsiveness, DNS latency, and upstream ping.
+* ⚡ **Resilient Auto-Updater Engine**:
+  * Dual-asset fallback (`app-release.apk` and `AG-Client-v3.0.0-release.apk`) to prevent 404 errors.
+  * Full HTTP 301/302/303/307/308 redirect support with refreshed headers.
+  * Direct Android 8–16 package installer permission handling (`canRequestPackageInstalls()`) prompting users directly to Unknown Apps settings.
 * 💬 **In-Game Join Welcome & Attribution**: When spawning on any server, a private message is sent to your chat:
   ```text
   ----------------------------------------
-  AG Client v2.9.9 - Made by Aayaan Ghosh
+  AG Client v3.0.0 - Made by Aayaan Ghosh
   Connected to server successfully!
   Type .help or /help to see command lists.
   ----------------------------------------
   ```
-* 📜 **Lunar Proxy Style Chat Commands**: Running `.help`, `/help`, `.cmds`, or `/commands` in chat prints all 70 commands grouped by category.
 
 ---
 
 ## 🚀 Complete Quick Start & Connection Guide
 
 ### 1. Installation
-1. Download the latest **`AG-Client-v2.9.9-release.apk`** from [Releases](https://github.com/agualtrahacker-India/AG-Client/releases).
-2. Install the APK on your Android device (Play Protect verifies it is clean and safe).
+1. Download the latest **`AG-Client-v3.0.0-release.apk`** from [Releases](https://github.com/agualtrahacker-India/AG-Client/releases).
+2. Install the APK on your Android device.
 
 ---
 
-### 2. How to Connect in Minecraft (Choose Method A or B)
+### 2. How to Connect in Minecraft
 
-#### 🟢 Method A: Virtual Sandbox Router (Recommended for Mobile Data / SIM Net & Wi-Fi)
+#### 🟢 Method A: Virtual Sandbox Router (Recommended for Mobile Data & Wi-Fi)
 1. Open **AG Client**.
 2. In **Server Configuration**, set your destination server (e.g., `geo.hivebedrock.network` or `play.nethergames.org` on port `19132`).
-3. Tap **"START SANDBOX"** (Android will ask for a 1-time local network permission — tap OK).
-4. Tap **"Copy 10.0.0.1"**.
-5. Tap **"Launch Minecraft"** (or open Minecraft):
+3. Under **Virtual Sandbox Router**, toggle the switch **ON** (Android will ask for a 1-time local routing permission — tap OK).
+4. Tap **"START PROXY"** (the single main start button).
+5. Tap **"Copy 10.0.0.1"** and tap **"Launch Minecraft"**:
    - Tap **Play**.
    - Tap **Servers** (the "Servers" tab at the top or stacked cubes icon 🖥️ in Ore UI).
    - Scroll down to the bottom and tap **"Add Server"**.
@@ -66,7 +73,7 @@
 
 #### 🔵 Method B: Local Loopback Mode (Direct 127.0.0.1)
 1. In Minecraft: Open **Settings** ➡️ **General** (or **Profile**) ➡️ Toggle **"Use Cellular Data"** to **ON** (required by Minecraft on mobile SIM data).
-2. Open **AG Client** ➡️ Set your Target Server IP & Port ➡️ Tap **"START PROXY"**.
+2. Open **AG Client** ➡️ Set your Target Server IP & Port ➡️ Ensure Virtual Sandbox switch is **OFF** ➡️ Tap **"START PROXY"**.
 3. In Minecraft:
    - Tap **Play** ➡️ **Servers** ➡️ **Add Server**.
    - **Server Address:** `127.0.0.1`
@@ -182,20 +189,18 @@ Once connected to any server:
 
 ---
 
-## 🔒 Native Profile Passthrough (Zero Extra Login)
+## 🔒 Native Profile Passthrough & Xbox Live Authentication
 
-AG Client features **Native Minecraft Passthrough**:
-* You **never need to log into Microsoft twice** or enter browser device codes.
-* Minecraft on your phone is already authenticated with your personal Microsoft account.
-* When you join `10.0.0.1:19133` (or `127.0.0.1:19133`), the proxy automatically captures your authentic, signed Xbox Live identity tokens, Gamertag, and custom skin from Minecraft and forwards them directly to the remote server.
-* Remote servers see your **real player name, real skin, and genuine account**!
+AG Client supports both connection models:
+* **Xbox Live / Official Server Authentication:** Includes built-in OAuth device code flow, 90-day persistent session tracking, automatic token refreshing, and official Mojang certificate chain exchange required by featured servers like The Hive.
+* **Native Minecraft Passthrough:** Captures client identity tokens and custom skins, re-signing outbound packets to preserve your genuine player skin, cape, and geometry.
 
 ---
 
 ## 🔄 Built-in 1-Tap Auto-Updater
 
 AG Client includes a built-in background auto-updater:
-1. Whenever a new release is pushed to GitHub, the app checks the GitHub API on launch.
+1. Whenever a new release is pushed to GitHub, the app checks for updates via Fastly CDN / GitHub releases.
 2. An **"Update Available"** card appears on the Dashboard with release notes.
 3. Tap **Download Update** ➡️ Tap **Install** to update the app directly on your phone without ever opening a web browser.
 

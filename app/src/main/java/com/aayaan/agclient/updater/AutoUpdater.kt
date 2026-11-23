@@ -50,9 +50,9 @@ class AutoUpdater(private val context: Context) {
     val updateState: StateFlow<UpdateState> = _updateState.asStateFlow()
 
     val currentVersion: String = try {
-        context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "2.9.9"
+        context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "3.0.0"
     } catch (_: Exception) {
-        "2.9.9"
+        "3.0.0"
     }
 
     companion object {
@@ -510,7 +510,7 @@ class AutoUpdater(private val context: Context) {
 
         if (cleanRemote.equals(cleanLocal, ignoreCase = true)) return false
 
-        // Extract numeric segments (e.g. [2, 9, 9] from "2.9.9")
+        // Extract numeric segments (e.g. [3, 0, 0] from "3.0.0")
         val rMajorMinor = cleanRemote.substringBefore("-").split(".").mapNotNull { it.toIntOrNull() }
         val lMajorMinor = cleanLocal.substringBefore("-").split(".").mapNotNull { it.toIntOrNull() }
 

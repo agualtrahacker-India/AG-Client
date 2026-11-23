@@ -48,7 +48,7 @@ jobs:
             exit 1
           fi
           # Ensure both naming conventions exist in release directory for universal updater compatibility
-          cp app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/AG-Client-v2.9.9-release.apk || true
+          cp app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/AG-Client-v3.0.0-release.apk || true
 
       - name: Upload Build Reports on Failure
         if: failure()
@@ -61,24 +61,24 @@ jobs:
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AG-Client-v2.9.9-release
+          name: AG-Client-v3.0.0-release
           path: app/build/outputs/apk/release/*.apk
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/connection-test'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v2.9.9
-          name: "AG Client v2.9.9 - Auth Pipeline Hardening, Auto-Updater Fix & Console Diagnostics"
+          tag_name: v3.0.0
+          name: "AG Client v3.0.0 - Major Milestone: Complete Auth Architecture & Auto-Updater Engine"
           body: |
-            ### AG Client v2.9.9 (Auth Pipeline Hardening, Auto-Updater Fix & Diagnostics)
+            ### AG Client v3.0.0 - Major Milestone Release
             Standalone Minecraft Bedrock MITM Proxy for Android.
             
-            #### What's New in v2.9.9:
+            #### What's New in v3.0.0:
             - **Authentication Pipeline Hardening:** Eliminated race conditions by pre-fetching the official Mojang certificate chain upon app and proxy startup. Awaits chain readiness before forwarding `LoginPacket` upstream, guaranteeing no unauthenticated packet leaks.
             - **Handshake Cryptography Fix (JOSE ES384 Format):** Corrected the ECDH `ServerToClientHandshakePacket` JWS signature from raw ASN.1 DER to the standard 96-byte JOSE (R||S) format required by vanilla Minecraft Bedrock, ensuring the client successfully verifies the handshake and activates AES encryption.
             - **Multi-Layer Client Key Extraction:** Implemented resilient multi-reflection inspection over CloudburstMC `LoginPacket` structures (handling `AsciiString`, `ByteBuf`, `List`, and raw JSON chains), correctly extracting the client's actual public key from the identity claim token rather than the CA root.
-            - **Auto-Updater Overhaul:** Fixed 404 download failures with automatic dual-URL fallback (`app-release.apk` & `AG-Client-v2.9.9-release.apk`). Full support for HTTP 301, 302, 303, 307, and 308 redirects with refreshed headers.
+            - **Auto-Updater Overhaul:** Fixed 404 download failures with automatic dual-URL fallback (`app-release.apk` & `AG-Client-v3.0.0-release.apk`). Full support for HTTP 301, 302, 303, 307, and 308 redirects with refreshed headers.
             - **Android 8–16 Package Installer Permissions:** Added explicit checking for `canRequestPackageInstalls()`, prompting the user directly to system settings if unknown sources are disabled, and saving downloads to external storage with broad FileProvider URI grants.
             - **Console Updater & Auth Diagnostics:** Run one-tap live diagnostic probes for Xbox Live tokens, Mojang endpoint, storage write permissions, and package installer configuration directly from the Console tab.
           files: app/build/outputs/apk/release/*.apk

@@ -136,24 +136,22 @@ fun ServiceControlCard(
                         )
                     }
                     Text(
-                        text = if (isSandboxRunning) "Active (Sandbox IP: 10.0.0.1)" else "Offline (Tap Start to Run Sandbox)",
+                        text = if (isSandboxRunning) "Active (Sandbox IP: 10.0.0.1)" else "Offline (Toggle to route via 10.0.0.1 cellular bypass)",
                         style = MaterialTheme.typography.labelSmall,
                         color = if (isSandboxRunning) AccentGreen else TextSecondary
                     )
                 }
 
-                Button(
-                    onClick = onToggleSandbox,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isSandboxRunning) AccentRed else ElectricPurple
+                Switch(
+                    checked = isSandboxRunning,
+                    onCheckedChange = { onToggleSandbox() },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = ElectricPurple,
+                        checkedTrackColor = ElectricPurple.copy(alpha = 0.5f),
+                        uncheckedThumbColor = TextSecondary,
+                        uncheckedTrackColor = DarkCard
                     )
-                ) {
-                    Text(
-                        text = if (isSandboxRunning) "STOP SANDBOX" else "START SANDBOX",
-                        color = TextPrimary,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                )
             }
 
             // Sandbox info status banner
